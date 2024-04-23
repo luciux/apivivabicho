@@ -38,11 +38,26 @@ public class AnimalService {
         return animalMapper.mapperToAnimalDTO(animalRepo);
     }
 
-    public AnimalDTO update(Animal animal, Long id){
-        Animal existingAnimal = repository.findById(id).orElseThrow(
+    public AnimalDTO update(Animal animal){
+
+        Animal existingAnimal = repository.findById(animal.getId()).orElseThrow(
                 () -> new EntityNotFoundException("No records found for this ID!"));
+        existingAnimal.setNome(animal.getNome());
+        existingAnimal.setRaca(animal.getRaca());
+        existingAnimal.setIdade(animal.getIdade());
+        existingAnimal.setSexo(animal.getSexo());
+        existingAnimal.setCor(animal.getCor());
+        existingAnimal.setTamanho(animal.getTamanho());
+        existingAnimal.setPeso(animal.getPeso());
+        existingAnimal.setDescricao(animal.getDescricao());
+        existingAnimal.setDisponivelParaAdocao(animal.isDisponivelParaAdocao());
+
 
         Animal updatedAnimal = repository.save(existingAnimal);
         return animalMapper.mapperToAnimalDTO(updatedAnimal);
+    }
+
+    public void delete(Long id){
+        repository.deleteById(id);
     }
 }

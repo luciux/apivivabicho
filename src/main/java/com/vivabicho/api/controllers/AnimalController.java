@@ -41,8 +41,14 @@ public class AnimalController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AnimalDTO> update(@RequestBody AnimalDTO animalDTO, @PathVariable Long id){
-        return ResponseEntity.ok(service.update(animalMapper.mapperToAnimal(animalDTO), id));
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AnimalDTO> update(@RequestBody AnimalDTO animalDTO){
+        return ResponseEntity.ok(service.update(animalMapper.mapperToAnimal(animalDTO)));
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> delete(@PathVariable("id") Long id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
